@@ -11,7 +11,7 @@ tags: devchallenge, sanitychallenge, sanity, ai
 **Cryptid Field Station** — a field guide where hikers report cryptid sightings, an AI + human workflow verifies them, and rangers triage from a live command center.
 
 - Hikers file sightings (story, coordinates, photo/video evidence) from the public site.
-- On intake, an **agent** runs two checks in parallel: a Gemini credibility verdict (skeptical-editor prompt against the cryptid's known traits) and an **Open-Meteo weather pull** for the actual sky that night — an external API call inside the workflow.
+- On intake, an **agent** runs two checks in parallel: an AI credibility verdict — Gemini via a skeptical-editor prompt, with a deterministic heuristic pre-screen as stand-in when no valid key is configured — and an **Open-Meteo weather pull** for the actual sky that night (an external API call inside the workflow; verified live for all 12 seed coordinates).
 - Strong reports auto-advance (`submitted → in-review → verified → published`); obvious fabrications auto-reject; everything in between waits for a human **ranger**, who verifies/rejects/publishes through the *same transitions* the agent uses.
 - Every transition appends a `verification` document next to the sighting — one audit trail, two authors (agent + human).
 - Published sightings join the cryptid's field-guide entry with the full trail attached.

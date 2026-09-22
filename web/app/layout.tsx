@@ -5,6 +5,12 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Cryptid Field Station',
   description: 'Report cryptid sightings, watch an AI + ranger workflow verify them, browse the field guide.',
+  openGraph: {
+    title: 'Cryptid Field Station',
+    description: 'Report it. Check it. Publish it. A Sanity-powered cryptid field guide.',
+    images: ['/og'],
+  },
+  twitter: {card: 'summary_large_image', images: ['/og']},
 }
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

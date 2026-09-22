@@ -75,7 +75,7 @@ export default async function Home() {
       <h2 className="section">How a report becomes canon</h2>
       <div className="steps">
         <div className="step"><b>1 · Report</b><span className="small muted">A hiker files a sighting with story, location, and evidence.</span></div>
-        <div className="step"><b>2 · Agent checks</b><span className="small muted">Gemini scores credibility; Open-Meteo pulls the actual sky that night.</span></div>
+        <div className="step"><b>2 · Agent checks</b><span className="small muted">An AI editor scores credibility (Gemini, or a heuristic stand-in); Open-Meteo pulls the actual sky that night.</span></div>
         <div className="step"><b>3 · Ranger review</b><span className="small muted">A human verifies or rejects through the same transitions the agent uses.</span></div>
         <div className="step"><b>4 · Field guide</b><span className="small muted">Published sightings join the cryptid entry, with the full audit trail attached.</span></div>
       </div>
