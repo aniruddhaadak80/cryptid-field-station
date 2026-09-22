@@ -51,7 +51,7 @@ export async function runAiCheck(input: {
   const key = process.env.GEMINI_API_KEY
   if (!key) return fallback()
   try {
-    const model = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash'
+    const model = process.env.GEMINI_MODEL ?? 'gemini-3.5-flash'
     const prompt = `You are a skeptical field editor for a cryptid-watching field guide. Score this sighting report 0-100 for credibility (specificity, internal consistency, match to the cryptid's known traits, honesty about uncertainty). Downgrade hard for stories that admit fabrication.
 
 Cryptid: ${input.cryptidName}
@@ -63,10 +63,10 @@ ${input.story}
 
 Reply with JSON only: {"score": <number>, "verdict": "credible"|"thin"|"reject", "reasons": ["...", "...", "..."]}`
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'x-goog-api-key': key},
         body: JSON.stringify({
           contents: [{parts: [{text: prompt}]}],
           generationConfig: {responseMimeType: 'application/json', maxOutputTokens: 512},

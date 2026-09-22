@@ -26,28 +26,35 @@ async function probeGemini() {
     console.log('[gemini] no key — production will use the heuristic pre-screen')
     return
   }
-  const configured = vars.GEMINI_MODEL ?? process.env.GEMINI_MODEL ?? 'gemini-2.5-flash'
-  const candidates = [...new Set([configured, 'gemini-2.5-flash', 'gemini-2.0-flash'])]
+  const configured = vars.GEMINI_MODEL ?? process.env.GEMINI_MODEL ?? 'gemini-3.5-flash'
+  const candidates = [...new Set([configured, 'gemini-3.5-flash', 'gemini-3.8-flash'])]
   for (const model of candidates) {
-    try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          contents: [{parts: [{text: 'Reply with exactly: OOKPIK'}]}],
-          generationConfig: {maxOutputTokens: 16},
-        }),
-      })
-      const text = res.ok
-        ? (await res.json())?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
-        : (await res.text()).slice(0, 120)
-      console.log(`[gemini] ${model} → HTTP ${res.status} reply=${JSON.stringify(text)}`)
-      if (res.ok) {
-        if (model !== configured) console.log(`[gemini] NOTE: configured model ${configured} failed but ${model} works — update GEMINI_MODEL`)
-        return
+    // Current docs authenticate via header; older style used ?key=. Try both.
+    const attempts = [
+      {via: 'header', url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, headers: {'Content-Type': 'application/json', 'x-goog-api-key': key}},
+      {via: 'query', url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, headers: {'Content-Type': 'application/json'}},
+    ]
+    for (const a of attempts) {
+      try {
+        const res = await fetch(a.url, {
+          method: 'POST',
+          headers: a.headers,
+          body: JSON.stringify({
+            contents: [{parts: [{text: 'Reply with exactly: OOKPIK'}]}],
+            generationConfig: {maxOutputTokens: 16},
+          }),
+        })
+        const text = res.ok
+          ? (await res.json())?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+          : (await res.text()).slice(0, 120)
+        console.log(`[gemini] ${model} via ${a.via} → HTTP ${res.status} reply=${JSON.stringify(text)}`)
+        if (res.ok) {
+          if (model !== configured) console.log(`[gemini] NOTE: configured model ${configured} failed but ${model} works — update GEMINI_MODEL`)
+          return
+        }
+      } catch (e) {
+        console.log(`[gemini] ${model} via ${a.via} → ERROR ${e.message}`)
       }
-    } catch (e) {
-      console.log(`[gemini] ${model} → ERROR ${e.message}`)
     }
   }
 }
