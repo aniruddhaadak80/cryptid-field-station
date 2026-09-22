@@ -4,7 +4,8 @@ A vibe-coded field guide where hikers report **cryptid sightings**, an **AI + hu
 
 **Submission for the [Sanity Challenge, Path Two: Vibe-Code Something Strange](https://dev.to/challenges/sanity-2026-09-16)** — Next.js frontend, Sanity as the content backbone, custom Studio input, workflow-as-data runner, and a real-time Ranger app.
 
-- **Live field guide:** deployed on Vercel (see `web/`)
+- **Live field guide:** https://cryptid-field-station.vercel.app (`web/` on Vercel)
+- **Live Ranger Dispatch:** https://cryptid-ranger-dispatch.vercel.app (`ranger/` on Vercel)
 - **Sanity project ID:** `yy3ugxmv` (dataset `production`)
 - **Studio:** `studio/` (custom video-to-GIF evidence input)
 - **Ranger app:** `ranger/` (real-time triage, own UI)
