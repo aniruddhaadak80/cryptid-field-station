@@ -11,3 +11,5 @@ sanity-dist/
 *.tsbuildinfo
 .DS_Store
 Thumbs.db
+
+.vercel
