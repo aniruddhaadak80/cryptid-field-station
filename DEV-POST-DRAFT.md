@@ -22,8 +22,8 @@ The control sample is my favorite part: the seed data includes a jackalope repor
 
 - 🌲 Field guide + report form: https://cryptid-field-station.vercel.app
 - 🛖 Ranger Dispatch board (real-time triage): https://cryptid-ranger-dispatch.vercel.app
-- 🖥️ Sanity Studio: runs from `studio/` today (`npx sanity dev`); the hosted Studio URL lands here right after `sanity deploy` (custom evidence input below)
-- 🎬 Walkthrough: the two live deployments above *are* the demo — no login needed anywhere. A recorded report → checks → publish loop gets embedded here once the dataset is seeded.
+- 🖥️ Sanity Studio: https://cryptid-field-station.sanity.studio (live; Sanity login required — the custom `EvidenceGifInput` sits on every sighting's evidence field)
+- 🎬 Walkthrough: the deployments above *are* the demo — no login needed on the guide or board. Live state: 7 cryptids, 12 sightings (5 published, 1 verified, 3 rejected, 3 open for review), every transition audit-logged in `verification` docs. Intake probe-tested end to end (a test report scored 45 → `in-review` with weather attached, then removed).
 
 Try it: file a sighting at `/report` (lat/lng optional but the weather check loves them), then watch it land in the Ranger Board's `submitted` lane and move through review.
 
