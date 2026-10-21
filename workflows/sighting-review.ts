@@ -16,6 +16,7 @@ export const sightingReview = {
     {from: 'in-review', to: 'verified', via: ['agent', 'ranger'], effect: 'approve', guard: 'score >= 80 or ranger override'},
     {from: 'in-review', to: 'rejected', via: ['agent', 'ranger'], effect: 'reject', guard: 'score <= 20 or ranger call'},
     {from: 'verified', to: 'published', via: ['agent', 'ranger'], effect: 'publish', guard: 'score >= 90 auto, else ranger'},
+    {from: 'rejected', to: 'in-review', via: ['ranger'], effect: 'overturn', guard: 'ranger override'},
   ],
   effects: {
     // Cookbook "AI content pipeline": automated checks first, human only where it matters.
