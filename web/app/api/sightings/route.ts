@@ -2,7 +2,7 @@ import {NextResponse} from 'next/server'
 import {readClient, queries, safeFetch, type Sighting} from '@/lib/sanity'
 import {fallbackSightings, cryptidNameById} from '@/lib/fallback'
 import {serverClient} from '@/lib/sanity'
-import {transition, AUTO_PUBLISH_SCORE, AUTO_REJECT_SCORE, type Checks} from '@/lib/workflow'
+import {transition, AUTO_PUBLISH_SCORE, AUTO_REJECT_SCORE, validateSubmission, type Checks} from '@/lib/workflow'
 import {runAiCheck} from '@/lib/ai-check'
 import {fetchWeather} from '@/lib/weather'
 
@@ -29,22 +29,23 @@ export async function POST(req: Request) {
   }
   try {
     const body = await req.json()
-    const {title, cryptidId, reporterName, observedAt, locationName, lat, lng, story, evidenceUrl, evidenceType} = body ?? {}
-    if (!title || !cryptidId || !reporterName || !observedAt || !story || String(story).length < 80) {
-      return NextResponse.json({error: 'Missing fields — title, cryptid, reporter, date, and a 80+ character story are required.'}, {status: 400})
+    const parsed = validateSubmission(body)
+    if (!parsed.ok || !parsed.value) {
+      return NextResponse.json({error: parsed.error ?? 'Submission rejected.'}, {status: 400})
     }
+    const {title, cryptidId, reporterName, observedAt, story, locationName, lat, lng, evidenceUrl, evidenceType} = parsed.value
 
     const doc = await client.create({
       _type: 'sighting',
       title: String(title).slice(0, 120),
       cryptid: {_type: 'reference', _ref: String(cryptidId)},
       reporterName: String(reporterName).slice(0, 60),
-      observedAt: new Date(observedAt).toISOString(),
+      observedAt,
       locationName: locationName ? String(locationName).slice(0, 120) : undefined,
       location: typeof lat === 'number' && typeof lng === 'number' ? {_type: 'geopoint', lat, lng} : undefined,
       story: String(story),
       evidenceUrl: evidenceUrl ? String(evidenceUrl) : undefined,
-      evidenceType: evidenceType === 'video' ? 'video' : 'image',
+      evidenceType,
       status: 'submitted',
     })
     const sightingId = doc._id as string
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
         cryptidName: cryptid?.name ?? 'unknown cryptid',
         evidenceUrl: evidenceUrl ? String(evidenceUrl) : undefined,
       }),
-      fetchWeather(typeof lat === 'number' ? lat : undefined, typeof lng === 'number' ? lng : undefined, new Date(observedAt).toISOString()),
+      fetchWeather(typeof lat === 'number' ? lat : undefined, typeof lng === 'number' ? lng : undefined, observedAt),
     ])
     const checks: Checks = {
       aiScore: verdict.score,

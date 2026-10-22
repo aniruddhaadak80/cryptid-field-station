@@ -14,6 +14,7 @@ const NEXT: Record<string, Array<{to: string; label: string; danger?: boolean}>>
     {to: 'rejected', label: 'Reject', danger: true},
   ],
   verified: [{to: 'published', label: 'Publish'}],
+  rejected: [{to: 'in-review', label: 'Overturn'}],
 }
 
 export default function RangerBoard({initial, live}: {initial: Sighting[]; live: boolean}) {
