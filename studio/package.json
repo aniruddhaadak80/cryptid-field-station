@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.3.0",
-    "typescript": "^5.5.0"
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "minimatch": "^11.0.1"
