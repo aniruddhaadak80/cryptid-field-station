@@ -1,0 +1,62 @@
+# Dependabot policy
+#
+# Four independent apps live in this repo, each with its own lockfile. Declaring
+# them explicitly keeps the security updater from guessing, and grouping the
+# routine bumps keeps one weekly run from opening a wall of PRs.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      web-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /ranger
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      ranger-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /seed
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      seed-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    directory: /studio
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      studio-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-patch:
+        update-types:
+          - minor
+          - patch
