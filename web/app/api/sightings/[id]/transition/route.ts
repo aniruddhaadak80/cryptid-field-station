@@ -4,8 +4,9 @@ import {transition, STATUSES, type Actor, type Status} from '@/lib/workflow'
 
 export const dynamic = 'force-dynamic'
 
-export async function POST(req: Request, {params}: {params: {id: string}}) {
-  const id = decodeURIComponent(params.id)
+export async function POST(req: Request, {params}: {params: Promise<{id: string}>}) {
+  const {id: rawId} = await params
+  const id = decodeURIComponent(rawId)
   if (id.startsWith('seed-')) {
     return NextResponse.json({error: 'That card is field-cache, not a live document — seed the dataset first.'}, {status: 409})
   }
