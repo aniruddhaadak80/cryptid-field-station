@@ -18,7 +18,7 @@
     "typescript": "^7.0.2"
   },
   "overrides": {
-    "minimatch": "11.1.0",
+    "minimatch": "11.0.9",
     "smol-toml": "1.7.1",
     "js-yaml": "4.3.2",
     "postcss": "8.5.18",
