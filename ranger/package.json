@@ -23,7 +23,7 @@
   "overrides": {
     "smol-toml": "1.7.1",
     "js-yaml": "4.3.2",
-    "postcss": "8.5.18",
+    "postcss": "8.5.33",
     "tar": "7.5.21",
     "sharp": "0.35.5",
     "undici": "8.12.2",
@@ -34,7 +34,6 @@
     "@azure/msal-node": "7.1.0",
     "@opentelemetry/propagator-jaeger": "2.9.0",
     "markdown-it": "14.3.3",
-    "source-map-js": "1.2.2",
-    "minimatch": "11.1.0"
+    "source-map-js": "1.2.2"
   }
 }
